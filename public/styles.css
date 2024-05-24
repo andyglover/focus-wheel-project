@@ -11,6 +11,7 @@ body {
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  order: 2;
 }
 
 #focus-details {
@@ -24,6 +25,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  order: 1;
 }
 
 .focus-item {
@@ -37,6 +39,7 @@ body {
   flex-direction: column;
   align-items: center;
   transition: transform 0.2s;
+  position: relative;
 }
 
 .focus-item.dragging {
@@ -63,7 +66,8 @@ body {
 }
 
 .task-button,
-.set-focus-button {
+.set-focus-button,
+.remove-focus-button {
   margin-top: 10px;
   padding: 10px 15px;
   border: none;
@@ -75,7 +79,8 @@ body {
 }
 
 .task-button:hover,
-.set-focus-button:hover {
+.set-focus-button:hover,
+.remove-focus-button:hover {
   background-color: #4169e1;
 }
 
