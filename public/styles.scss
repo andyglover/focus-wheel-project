@@ -95,11 +95,12 @@ body {
 }
 
 .button-group {
-  display: flex;
-  justify-content: space-around;
   position: absolute;
-  top: calc(100% + 10px);
-  width: 100%;
+  bottom: -20px; // Adjust position to be below the focus item
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px; // Add space between buttons
 }
 
 .circle-button {
@@ -250,7 +251,7 @@ body {
   }
 
   .button-group {
-    top: calc(100% + 5px);
+    bottom: -10px; // Adjust for smaller screens
   }
 
   .circle-button {
@@ -273,7 +274,7 @@ body {
   }
 
   .button-group {
-    top: calc(100% + 3px);
+    bottom: -5px; // Adjust for smaller screens
   }
 
   .circle-button {
