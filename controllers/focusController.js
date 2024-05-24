@@ -1,49 +1,54 @@
-const { readUsersData, writeUsersData } = require("../utils/dataUtils");
+const path = require("path");
+const { readData, writeData } = require("../utils/dataUtils");
 
-const addFocus = (req, res) => {
-  const { name, description, color } = req.body;
-  const users = readUsersData();
-  if (!users.focuses) {
-    users.focuses = [];
+const focusFilePath = path.join(__dirname, "../data/focuses.json");
+
+const getFocuses = async (req, res) => {
+  try {
+    const focuses = await readData(focusFilePath);
+    res.json(focuses);
+  } catch (error) {
+    res.status(500).send("Error reading focus data");
   }
-  users.focuses.push({ name, description, color, percentComplete: 0 });
-  writeUsersData(users);
-  res.status(201).json({ message: "Focus added" });
 };
 
-const removeFocus = (req, res) => {
-  const { focusName } = req.body;
-  const users = readUsersData();
-  if (users.focuses) {
-    users.focuses = users.focuses.filter((focus) => focus.name !== focusName);
-    writeUsersData(users);
+const addFocus = async (req, res) => {
+  try {
+    const focuses = await readData(focusFilePath);
+    const newFocus = req.body;
+    focuses.push(newFocus);
+    await writeData(focusFilePath, focuses);
+    res.status(201).send("Focus added");
+  } catch (error) {
+    res.status(500).send("Error adding focus");
   }
-  res.status(200).json({ message: "Focus removed" });
 };
 
-const getFocuses = (req, res) => {
-  const users = readUsersData();
-  const focuses = users.focuses || [];
-  res.json(focuses);
+const removeFocus = async (req, res) => {
+  try {
+    const focuses = await readData(focusFilePath);
+    const focusName = req.body.focusName;
+    const updatedFocuses = focuses.filter((focus) => focus.name !== focusName);
+    await writeData(focusFilePath, updatedFocuses);
+    res.send("Focus removed");
+  } catch (error) {
+    res.status(500).send("Error removing focus");
+  }
 };
 
-const setTodayFocus = (req, res) => {
-  const { focusName } = req.body;
-  const users = readUsersData();
-  const todayFocus = users.focuses.find((focus) => focus.name === focusName);
-  res.json(todayFocus);
+const setTodayFocus = async (req, res) => {
+  try {
+    const focuses = await readData(focusFilePath);
+    const todayFocus = req.body.focusName;
+    const focus = focuses.find((focus) => focus.name === todayFocus);
+    if (focus) {
+      res.json(focus);
+    } else {
+      res.status(404).send("Focus not found");
+    }
+  } catch (error) {
+    res.status(500).send("Error setting today's focus");
+  }
 };
 
-const updateFocusOrder = (req, res) => {
-  const newOrder = req.body;
-  console.log("New order of focuses:", newOrder);
-  res.status(200).json({ message: "Focus order updated" });
-};
-
-module.exports = {
-  addFocus,
-  removeFocus,
-  getFocuses,
-  setTodayFocus,
-  updateFocusOrder,
-};
+module.exports = { getFocuses, addFocus, removeFocus, setTodayFocus };

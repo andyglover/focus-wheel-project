@@ -1,4 +1,5 @@
 const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 
 const dataPath = path.join(__dirname, "..", "data", "users.json");
@@ -21,7 +22,29 @@ const writeUsersData = (data) => {
   }
 };
 
+const readData = async (filePath) => {
+  try {
+    const data = await fs.readFile(filePath, "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return []; // Return empty array if file does not exist
+    }
+    throw error;
+  }
+};
+
+const writeData = async (filePath, data) => {
+  try {
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf8");
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   readUsersData,
   writeUsersData,
+  readData,
+  writeData,
 };

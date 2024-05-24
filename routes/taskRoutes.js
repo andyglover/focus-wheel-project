@@ -4,15 +4,12 @@ const {
   addTask,
   deleteTask,
   toggleTaskCompletion,
-  getPredefinedTasks,
 } = require("../controllers/taskController");
-
 const router = express.Router();
 
 router.get("/tasks", getTasks);
 router.post("/add-task", addTask);
 router.post("/delete-task", deleteTask);
 router.post("/toggle-task-completion", toggleTaskCompletion);
-router.get("/predefined-tasks", getPredefinedTasks);
 
 module.exports = router;
