@@ -19,6 +19,15 @@
             <div id="focus-name"></div>
             <div id="focus-description"></div>
         </div>
+        <div id="task-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeTaskMenu()">&times;</span>
+                <h2 id="task-focus-name"></h2>
+                <div id="task-list"></div>
+                <input type="text" id="new-task" placeholder="New task">
+                <button onclick="addTask()">Add Task</button>
+            </div>
+        </div>
         <script>
         async function loadFocuses() {
             const response = await fetch('/api/focuses');
@@ -52,7 +61,50 @@
         }
 
         async function openTaskMenu(focusName) {
-            // Logic to open the task sub-menu for the given focus
+            document.getElementById('task-modal').style.display = 'block';
+            document.getElementById('task-focus-name').innerText = focusName;
+            loadTasks(focusName);
+        }
+
+        async function closeTaskMenu() {
+            document.getElementById('task-modal').style.display = 'none';
+        }
+
+        async function loadTasks(focusName) {
+            const response = await fetch(`/api/tasks?focus=${focusName}`);
+            const tasks = await response.json();
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+            tasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+                taskItem.innerHTML = `
+                    <span>${task.name}</span>
+                    <button onclick="deleteTask('${focusName}', '${task.name}')">Delete</button>
+                `;
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        async function addTask() {
+            const focusName = document.getElementById('task-focus-name').innerText;
+            const taskName = document.getElementById('new-task').value;
+            await fetch('/api/add-task', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ focusName, taskName })
+            });
+            loadTasks(focusName);
+            document.getElementById('new-task').value = '';
+        }
+
+        async function deleteTask(focusName, taskName) {
+            await fetch('/api/delete-task', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ focusName, taskName })
+            });
+            loadTasks(focusName);
         }
 
         loadFocuses();

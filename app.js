@@ -44,6 +44,36 @@ app.post("/api/set-today-focus", (req, res) => {
   res.json(todayFocus);
 });
 
+app.get("/api/tasks", (req, res) => {
+  const { focus } = req.query;
+  const users = readUsersData();
+  const tasks = users[focus] ? users[focus].tasks : [];
+  res.json(tasks);
+});
+
+app.post("/api/add-task", (req, res) => {
+  const { focusName, taskName } = req.body;
+  const users = readUsersData();
+  if (!users[focusName]) {
+    users[focusName] = { tasks: [] };
+  }
+  users[focusName].tasks.push({ name: taskName });
+  writeUsersData(users);
+  res.status(201).json({ message: "Task added" });
+});
+
+app.post("/api/delete-task", (req, res) => {
+  const { focusName, taskName } = req.body;
+  const users = readUsersData();
+  if (users[focusName]) {
+    users[focusName].tasks = users[focusName].tasks.filter(
+      (task) => task.name !== taskName
+    );
+    writeUsersData(users);
+  }
+  res.status(200).json({ message: "Task deleted" });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
