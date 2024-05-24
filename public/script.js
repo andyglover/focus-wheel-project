@@ -37,8 +37,8 @@ function arrangeFocusesInCircle() {
     const x = radius * Math.cos(angle) - item.clientWidth / 2;
     const y = radius * Math.sin(angle) - item.clientHeight / 2;
     item.style.position = "absolute";
-    item.style.left = `${x}px`;
-    item.style.top = `${y}px`;
+    item.style.left = `calc(50% + ${x}px)`;
+    item.style.top = `calc(50% + ${y}px)`;
     item.style.transform = `rotate(${angle}rad)`;
   });
 }
