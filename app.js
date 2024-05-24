@@ -11,6 +11,14 @@ app.use(express.json());
 
 app.use("/api", focusRoutes);
 
+const predefinedTasks = {
+  Health: ["Exercise", "Meditate", "Eat Healthy"],
+  Career: ["Update Resume", "Attend Workshop", "Network"],
+  Relationships: ["Call Family", "Plan Date Night", "Spend Time with Friends"],
+  Finance: ["Budget Planning", "Review Investments", "Save Money"],
+  "Personal Growth": ["Read Book", "Learn New Skill", "Reflect"],
+};
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });

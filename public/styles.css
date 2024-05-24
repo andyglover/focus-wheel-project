@@ -65,12 +65,13 @@ body {
 .task-button,
 .set-focus-button {
   margin-top: 10px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   background-color: #4682b4;
   color: #fff;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .task-button:hover,
@@ -137,7 +138,7 @@ body {
 }
 
 .task-item button {
-  padding: 5px 10px;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   background-color: #4682b4;
