@@ -13,12 +13,14 @@
     </head>
     <body>
         <h1>Focus Wheel</h1>
-        <div id="focus-list" class="focus-list"></div>
         <div id="today-focus">
             <h2>Today's Focus</h2>
-            <div id="focus-name"></div>
-            <div id="focus-description"></div>
+            <div id="focus-details">
+                <div id="focus-name"></div>
+                <div id="focus-description"></div>
+            </div>
         </div>
+        <div id="focus-list" class="focus-list"></div>
         <div id="task-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeTaskMenu()">&times;</span>
@@ -42,11 +44,11 @@
                 focusDiv.innerHTML = `
                     <div class="focus-header" style="background-color: ${focus.color}">
                         <h3>${focus.name}</h3>
-                        <button onclick="setTodayFocus('${focus.name}')">Set as Today's Focus</button>
                     </div>
                     <p>${focus.description}</p>
                     <div class="progress-bar" style="width: ${focus.percentComplete}%"></div>
-                    <button onclick="openTaskMenu('${focus.name}')">Tasks</button>
+                    <button class="task-button" onclick="openTaskMenu('${focus.name}')">Tasks</button>
+                    <button class="set-focus-button" onclick="setTodayFocus('${focus.name}')">Set as Today's Focus</button>
                 `;
                 focusList.appendChild(focusDiv);
             });
