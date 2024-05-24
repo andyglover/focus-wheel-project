@@ -15,28 +15,33 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.post("/api/user/:username/focus", (req, res) => {
-  const { username } = req.params;
-  const { focus } = req.body;
-  const users = readUsersData();
-
-  if (!users[username]) {
-    users[username] = [];
-  }
-  users[username].push(focus);
-  writeUsersData(users);
-
-  res.status(201).json({ message: "Focus area added to user history", focus });
+app.get("/api/focuses", (req, res) => {
+  const focuses = [
+    {
+      name: "Health",
+      description: "Focus on your physical and mental health.",
+      color: "#FF6347",
+      percentComplete: 50,
+    },
+    {
+      name: "Career",
+      description: "Focus on your professional growth and tasks.",
+      color: "#4682B4",
+      percentComplete: 70,
+    },
+    // Add more focuses here
+  ];
+  res.json(focuses);
 });
 
-app.get("/api/user/:username/focus", (req, res) => {
-  const { username } = req.params;
-  const users = readUsersData();
-
-  if (!users[username]) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  res.json(users[username]);
+app.post("/api/set-today-focus", (req, res) => {
+  const { focusName } = req.body;
+  // Logic to set today's focus
+  const todayFocus = {
+    name: focusName,
+    description: "Description for " + focusName,
+  };
+  res.json(todayFocus);
 });
 
 app.listen(PORT, () => {

@@ -4,12 +4,35 @@ body {
   margin: 20px;
 }
 
-#focus-area {
+#today-focus {
   margin: 20px 0;
+  border: 2px solid #000;
+  padding: 10px;
 }
 
-button {
+#focus-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.focus-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
   margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px;
+  width: 200px;
+}
+
+.focus-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #4caf50;
+  border-radius: 5px;
+  margin-top: 10px;
 }
