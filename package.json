@@ -12,5 +12,8 @@
   "description": "",
   "devDependencies": {
     "jsdoc": "^4.0.3"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }
