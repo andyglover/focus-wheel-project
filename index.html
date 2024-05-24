@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Focus Wheel</h1>
-        <div id="focus-list"></div>
+        <div id="focus-list" class="focus-list"></div>
         <div id="today-focus">
             <h2>Today's Focus</h2>
             <div id="focus-name"></div>
@@ -33,9 +33,12 @@
             const response = await fetch('/api/focuses');
             const focuses = await response.json();
             const focusList = document.getElementById('focus-list');
-            focuses.forEach(focus => {
+            focusList.innerHTML = '';
+            focuses.forEach((focus, index) => {
                 const focusDiv = document.createElement('div');
                 focusDiv.className = 'focus-item';
+                focusDiv.setAttribute('draggable', 'true');
+                focusDiv.setAttribute('data-index', index);
                 focusDiv.innerHTML = `
                     <div class="focus-header" style="background-color: ${focus.color}">
                         <h3>${focus.name}</h3>
@@ -47,6 +50,7 @@
                 `;
                 focusList.appendChild(focusDiv);
             });
+            enableDragAndDrop();
         }
 
         async function setTodayFocus(focusName) {
@@ -105,6 +109,61 @@
                 body: JSON.stringify({ focusName, taskName })
             });
             loadTasks(focusName);
+        }
+
+        function enableDragAndDrop() {
+            const draggables = document.querySelectorAll('.focus-item');
+            const container = document.querySelector('.focus-list');
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', () => {
+                    draggable.classList.add('dragging');
+                });
+
+                draggable.addEventListener('dragend', () => {
+                    draggable.classList.remove('dragging');
+                    updateFocusOrder();
+                });
+            });
+
+            container.addEventListener('dragover', e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientY);
+                const draggable = document.querySelector('.dragging');
+                if (afterElement == null) {
+                    container.appendChild(draggable);
+                } else {
+                    container.insertBefore(draggable, afterElement);
+                }
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.focus-item:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        async function updateFocusOrder() {
+            const focusList = document.querySelectorAll('.focus-item');
+            const newOrder = [];
+            focusList.forEach((focusItem, index) => {
+                const name = focusItem.querySelector('.focus-header h3').innerText;
+                newOrder.push({ name, order: index });
+            });
+            await fetch('/api/update-focus-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newOrder)
+            });
         }
 
         loadFocuses();

@@ -74,6 +74,13 @@ app.post("/api/delete-task", (req, res) => {
   res.status(200).json({ message: "Task deleted" });
 });
 
+app.post("/api/update-focus-order", (req, res) => {
+  const newOrder = req.body;
+  // Logic to update the order of focuses
+  console.log("New order of focuses:", newOrder);
+  res.status(200).json({ message: "Focus order updated" });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
