@@ -26,6 +26,7 @@ body {
   justify-content: center;
   gap: 20px;
   order: 1;
+  position: relative;
 }
 
 .focus-item {
@@ -171,6 +172,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
+  transform: rotate(30deg);
 }
 
 @media (max-width: 768px) {

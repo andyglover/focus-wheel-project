@@ -22,6 +22,7 @@ async function loadFocuses() {
         `;
     focusList.appendChild(focusDiv);
   });
+  arrangeFocusesInCircle();
   enableDragAndDrop();
 }
 
@@ -229,6 +230,21 @@ async function updateFocusOrder() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newOrder),
+  });
+}
+
+function arrangeFocusesInCircle() {
+  const focusList = document.getElementById("focus-list");
+  const focusItems = focusList.querySelectorAll(".focus-item");
+  const radius = 200; // Adjust as necessary
+  const angleStep = (2 * Math.PI) / focusItems.length;
+
+  focusItems.forEach((item, index) => {
+    const angle = index * angleStep;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+    item.style.position = "absolute";
+    item.style.transform = `translate(${x}px, ${y}px)`;
   });
 }
 
