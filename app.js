@@ -5,6 +5,7 @@ const {
   getTodaysFocus,
   getRandomFocus,
   getFocusForDay,
+  addFocusArea,
 } = require("./src/index");
 
 const app = express();
