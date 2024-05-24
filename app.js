@@ -1,12 +1,7 @@
 const express = require("express");
 const path = require("path");
-const {
-  getTodaysFocus,
-  getRandomFocus,
-  getFocusForDay,
-  addFocusArea,
-} = require("./src/index");
 const { readUsersData, writeUsersData } = require("./models/userStorage");
+const focusRoutes = require("./routes/focusRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,18 +9,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
+app.use("/api", focusRoutes);
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
-});
-
-app.get("/api/todays-focus", (req, res) => {
-  const focus = getTodaysFocus();
-  res.json(focus);
-});
-
-app.get("/api/random-focus", (req, res) => {
-  const focus = getRandomFocus();
-  res.json(focus);
 });
 
 app.post("/api/user/:username/focus", (req, res) => {
@@ -50,14 +37,6 @@ app.get("/api/user/:username/focus", (req, res) => {
     return res.status(404).json({ message: "User not found" });
   }
   res.json(users[username]);
-});
-
-app.post("/api/focus-area", (req, res) => {
-  const { name, description } = req.body;
-  addFocusArea({ name, description });
-  res
-    .status(201)
-    .json({ message: "Focus area added", focusArea: { name, description } });
 });
 
 app.listen(PORT, () => {
