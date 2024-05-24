@@ -1,12 +1,12 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 const {
   getTodaysFocus,
   getRandomFocus,
   getFocusForDay,
   addFocusArea,
 } = require("./src/index");
+const { readUsersData, writeUsersData } = require("./models/userStorage");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
