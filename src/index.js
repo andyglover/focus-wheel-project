@@ -10,45 +10,7 @@
  * @returns {FocusArea} The recommended focus area for today.
  */
 function getTodaysFocus() {
-  const focusAreas = [
-    {
-      name: "Health",
-      description: "Focus on your physical and mental health.",
-    },
-    {
-      name: "Career",
-      description: "Focus on your professional growth and tasks.",
-    },
-    {
-      name: "Relationships",
-      description: "Spend quality time with family and friends.",
-    },
-    {
-      name: "Finance",
-      description: "Manage your finances and plan your budget.",
-    },
-    {
-      name: "Personal Growth",
-      description: "Engage in activities that promote self-improvement.",
-    },
-    {
-      name: "Leisure",
-      description: "Take time to relax and enjoy your hobbies.",
-    },
-    {
-      name: "Community",
-      description: "Participate in community service and social causes.",
-    },
-    {
-      name: "Creativity",
-      description: "Explore creative activities and projects.",
-    },
-    {
-      name: "Spirituality",
-      description: "Spend time on spiritual growth and practices.",
-    },
-  ];
-
+  const focusAreas = getFocusAreas();
   const today = new Date().getDay();
   return focusAreas[today % focusAreas.length];
 }
@@ -58,7 +20,30 @@ function getTodaysFocus() {
  * @returns {FocusArea} A randomly selected focus area.
  */
 function getRandomFocus() {
-  const focusAreas = [
+  const focusAreas = getFocusAreas();
+  const randomIndex = Math.floor(Math.random() * focusAreas.length);
+  return focusAreas[randomIndex];
+}
+
+/**
+ * Get the focus area for a specific day.
+ * @param {number} day - The day of the week (0-6), where 0 is Sunday and 6 is Saturday.
+ * @returns {FocusArea} The focus area for the specified day.
+ */
+function getFocusForDay(day) {
+  if (day < 0 || day > 6) {
+    throw new Error("Day must be between 0 (Sunday) and 6 (Saturday).");
+  }
+  const focusAreas = getFocusAreas();
+  return focusAreas[day % focusAreas.length];
+}
+
+/**
+ * Get the list of focus areas.
+ * @returns {FocusArea[]} The list of focus areas.
+ */
+function getFocusAreas() {
+  return [
     {
       name: "Health",
       description: "Focus on your physical and mental health.",
@@ -96,9 +81,11 @@ function getRandomFocus() {
       description: "Spend time on spiritual growth and practices.",
     },
   ];
-
-  const randomIndex = Math.floor(Math.random() * focusAreas.length);
-  return focusAreas[randomIndex];
 }
 
-module.exports = { getTodaysFocus, getRandomFocus };
+module.exports = {
+  getTodaysFocus,
+  getRandomFocus,
+  getFocusForDay,
+  getFocusAreas,
+};
