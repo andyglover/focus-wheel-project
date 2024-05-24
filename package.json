@@ -4,6 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "sass public/styles.scss public/styles.css --style compressed",
+    "watch-css": "sass --watch public/styles.scss:public/styles.css --style compressed",
+    "start": "node app.js",
     "doc": "jsdoc -c jsdoc.json"
   },
   "keywords": [],
@@ -11,7 +14,8 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "jsdoc": "^4.0.3"
+    "jsdoc": "^4.0.3",
+    "sass": "^1.77.2"
   },
   "dependencies": {
     "express": "^4.19.2"

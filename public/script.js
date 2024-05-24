@@ -38,14 +38,16 @@ async function loadFocuses() {
     focusDiv.setAttribute("draggable", "true");
     focusDiv.setAttribute("data-index", index);
     focusDiv.innerHTML = `
-            <div class="focus-header" style="background-color: ${focus.color}">
-                <h3>${focus.name}</h3>
+            <div class="focus-content">
+                <div class="focus-header" style="background-color: ${focus.color}">
+                    <h3>${focus.name}</h3>
+                </div>
+                <p>${focus.description}</p>
+                <div class="progress-bar" id="progress-bar-${focus.name}" style="width: ${focus.percentComplete}%"></div>
+                <button class="task-button" onclick="openTaskMenu('${focus.name}')">Tasks</button>
+                <button class="set-focus-button" onclick="setTodayFocus('${focus.name}', '${focus.color}')">Set as Today's Focus</button>
+                <button class="remove-focus-button" onclick="removeFocus('${focus.name}')">Remove Focus</button>
             </div>
-            <p>${focus.description}</p>
-            <div class="progress-bar" id="progress-bar-${focus.name}" style="width: ${focus.percentComplete}%"></div>
-            <button class="task-button" onclick="openTaskMenu('${focus.name}')">Tasks</button>
-            <button class="set-focus-button" onclick="setTodayFocus('${focus.name}', '${focus.color}')">Set as Today's Focus</button>
-            <button class="remove-focus-button" onclick="removeFocus('${focus.name}')">Remove Focus</button>
         `;
     focusList.appendChild(focusDiv);
   });
