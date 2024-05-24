@@ -153,8 +153,8 @@
         }
 
         async function loadPredefinedTasks(focusName) {
-            const predefinedTasks = await fetch(`/api/predefined-tasks?focus=${focusName}`);
-            const tasks = await predefinedTasks.json();
+            const response = await fetch(`/api/predefined-tasks?focus=${focusName}`);
+            const tasks = await response.json();
             const predefinedTaskList = document.getElementById('predefined-task-list');
             predefinedTaskList.innerHTML = '<h3>Predefined Tasks</h3>';
             tasks.forEach(task => {
