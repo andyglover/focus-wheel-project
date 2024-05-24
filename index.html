@@ -83,6 +83,7 @@
                 const taskItem = document.createElement('div');
                 taskItem.className = 'task-item';
                 taskItem.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTaskCompletion('${focusName}', '${task.name}')">
                     <span>${task.name}</span>
                     <button onclick="deleteTask('${focusName}', '${task.name}')">Delete</button>
                 `;
@@ -104,6 +105,15 @@
 
         async function deleteTask(focusName, taskName) {
             await fetch('/api/delete-task', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ focusName, taskName })
+            });
+            loadTasks(focusName);
+        }
+
+        async function toggleTaskCompletion(focusName, taskName) {
+            await fetch('/api/toggle-task-completion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ focusName, taskName })

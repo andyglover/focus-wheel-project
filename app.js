@@ -57,7 +57,7 @@ app.post("/api/add-task", (req, res) => {
   if (!users[focusName]) {
     users[focusName] = { tasks: [] };
   }
-  users[focusName].tasks.push({ name: taskName });
+  users[focusName].tasks.push({ name: taskName, completed: false });
   writeUsersData(users);
   res.status(201).json({ message: "Task added" });
 });
@@ -72,6 +72,18 @@ app.post("/api/delete-task", (req, res) => {
     writeUsersData(users);
   }
   res.status(200).json({ message: "Task deleted" });
+});
+
+app.post("/api/toggle-task-completion", (req, res) => {
+  const { focusName, taskName } = req.body;
+  const users = readUsersData();
+  if (users[focusName]) {
+    users[focusName].tasks = users[focusName].tasks.map((task) =>
+      task.name === taskName ? { ...task, completed: !task.completed } : task
+    );
+    writeUsersData(users);
+  }
+  res.status(200).json({ message: "Task completion toggled" });
 });
 
 app.post("/api/update-focus-order", (req, res) => {
