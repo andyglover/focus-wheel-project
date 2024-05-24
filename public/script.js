@@ -157,7 +157,7 @@ async function loadTasks(focusName) {
   const response = await fetch(`/api/task/tasks?focus=${focusName}`);
   const tasks = await response.json();
   const taskList = document.getElementById("task-list");
-  taskList.innerHTML = "";
+  taskList.innerHTML = ""; // Ensure task list is cleared before adding new tasks
   tasks.forEach((task) => {
     const taskItem = document.createElement("div");
     taskItem.className = "task-item";
