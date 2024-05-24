@@ -1,14 +1,18 @@
 const express = require("express");
 const {
-  getTodaysFocusController,
-  getRandomFocusController,
-  addFocusAreaController,
+  addFocus,
+  removeFocus,
+  getFocuses,
+  setTodayFocus,
+  updateFocusOrder,
 } = require("../controllers/focusController");
 
 const router = express.Router();
 
-router.get("/todays-focus", getTodaysFocusController);
-router.get("/random-focus", getRandomFocusController);
-router.post("/focus-area", addFocusAreaController);
+router.post("/add-focus", addFocus);
+router.post("/remove-focus", removeFocus);
+router.get("/focuses", getFocuses);
+router.post("/set-today-focus", setTodayFocus);
+router.post("/update-focus-order", updateFocusOrder);
 
 module.exports = router;
