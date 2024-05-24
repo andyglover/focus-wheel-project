@@ -150,6 +150,18 @@ body {
   background-color: #4169e1;
 }
 
+.predefined-task {
+  background-color: #f0f0f0;
+}
+
+.predefined-task button {
+  background-color: #32cd32;
+}
+
+.predefined-task button:hover {
+  background-color: #228b22;
+}
+
 .focus-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

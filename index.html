@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description"
               content="Focus Wheel - A simple web app to help you focus on different areas of your life.">
         <meta name="keywords" content="focus, productivity, personal growth">
@@ -26,6 +25,7 @@
                 <span class="close" onclick="closeTaskMenu()">&times;</span>
                 <h2 id="task-focus-name"></h2>
                 <div id="task-list"></div>
+                <div id="predefined-task-list"></div>
             </div>
         </div>
         <script>
@@ -82,6 +82,7 @@
             document.getElementById('task-modal').style.display = 'block';
             document.getElementById('task-focus-name').innerText = focusName;
             loadTasks(focusName);
+            loadPredefinedTasks(focusName);
         }
 
         async function closeTaskMenu() {
@@ -112,6 +113,22 @@
             taskList.appendChild(newTaskItem);
         }
 
+        async function loadPredefinedTasks(focusName) {
+            const predefinedTasks = await fetch(`/api/predefined-tasks?focus=${focusName}`);
+            const tasks = await predefinedTasks.json();
+            const predefinedTaskList = document.getElementById('predefined-task-list');
+            predefinedTaskList.innerHTML = '<h3>Predefined Tasks</h3>';
+            tasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item predefined-task';
+                taskItem.innerHTML = `
+                    <span>${task}</span>
+                    <button onclick="addPredefinedTask('${focusName}', '${task}')">Add</button>
+                `;
+                predefinedTaskList.appendChild(taskItem);
+            });
+        }
+
         async function addTask(focusName) {
             const taskName = document.getElementById('new-task').value;
             if (!taskName.trim()) {
@@ -125,6 +142,15 @@
             });
             loadTasks(focusName);
             document.getElementById('new-task').value = '';
+        }
+
+        async function addPredefinedTask(focusName, taskName) {
+            await fetch('/api/add-task', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ focusName, taskName })
+            });
+            loadTasks(focusName);
         }
 
         async function deleteTask(focusName, taskName) {

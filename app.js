@@ -72,12 +72,13 @@ app.get("/api/tasks", (req, res) => {
   const { focus } = req.query;
   const users = readUsersData();
   const tasks = users[focus] ? users[focus].tasks : [];
-  const allTasks = tasks.concat(
-    predefinedTasks[focus]
-      ? predefinedTasks[focus].map((task) => ({ name: task, completed: false }))
-      : []
-  );
-  res.json(allTasks);
+  res.json(tasks);
+});
+
+app.get("/api/predefined-tasks", (req, res) => {
+  const { focus } = req.query;
+  const tasks = predefinedTasks[focus] || [];
+  res.json(tasks);
 });
 
 app.post("/api/add-task", (req, res) => {
@@ -117,7 +118,6 @@ app.post("/api/toggle-task-completion", (req, res) => {
 
 app.post("/api/update-focus-order", (req, res) => {
   const newOrder = req.body;
-  // Logic to update the order of focuses
   console.log("New order of focuses:", newOrder);
   res.status(200).json({ message: "Focus order updated" });
 });
