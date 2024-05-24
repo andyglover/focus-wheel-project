@@ -96,28 +96,34 @@ body {
 
 .button-group {
   position: absolute;
-  bottom: -20px; // Adjust position to be below the focus item
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(
+    -50%,
+    -50%
+  ); // Center the button group on the focus circle
   display: flex;
-  gap: 5px; // Add space between buttons
+  gap: 10px; // Add space between buttons
+  justify-content: center;
+  width: 150px; // Adjust as necessary to position buttons outside the circle
 }
 
 .circle-button {
-  width: $button-size;
-  height: $button-size;
+  width: 30px; // Adjust size if necessary
+  height: 30px;
   border-radius: 50%;
   border: none;
-  background-color: $primary-color;
+  background-color: #4682b4;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   position: relative;
+  transform: translateY(-150%); // Move the buttons outside the circle
 
   &:hover {
-    background-color: $hover-color;
+    background-color: #4169e1;
   }
 
   &:hover .tooltip {
