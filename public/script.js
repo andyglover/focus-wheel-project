@@ -38,17 +38,24 @@ async function loadFocuses() {
     focusDiv.setAttribute("draggable", "true");
     focusDiv.setAttribute("data-index", index);
     focusDiv.innerHTML = `
-            <div class="focus-content">
-                <div class="focus-header" style="background-color: ${focus.color}">
-                    <h3>${focus.name}</h3>
-                </div>
-                <p>${focus.description}</p>
-                <div class="progress-bar" id="progress-bar-${focus.name}" style="width: ${focus.percentComplete}%"></div>
-                <button class="task-button" onclick="openTaskMenu('${focus.name}')">Tasks</button>
-                <button class="set-focus-button" onclick="setTodayFocus('${focus.name}', '${focus.color}')">Set as Today's Focus</button>
-                <button class="remove-focus-button" onclick="removeFocus('${focus.name}')">Remove Focus</button>
+            <h3>${focus.name}</h3>
+            <div class="focus-description">${focus.description}</div>
+            <div class="button-group">
+                <button class="circle-button task-button" onclick="openTaskMenu('${focus.name}')">
+                    <span class="tooltip">Tasks</span>
+                    <img src="icons/tasks.svg" alt="Tasks" width="16" height="16">
+                </button>
+                <button class="circle-button set-focus-button" onclick="setTodayFocus('${focus.name}', '${focus.color}')">
+                    <span class="tooltip">Set as Today's Focus</span>
+                    <img src="icons/set-focus.svg" alt="Set Focus" width="16" height="16">
+                </button>
+                <button class="circle-button remove-focus-button" onclick="removeFocus('${focus.name}')">
+                    <span class="tooltip">Remove Focus</span>
+                    <img src="icons/remove.svg" alt="Remove" width="16" height="16">
+                </button>
             </div>
         `;
+    focusDiv.style.backgroundColor = focus.color;
     focusList.appendChild(focusDiv);
   });
   arrangeFocusesInCircle();
@@ -86,8 +93,8 @@ async function setTodayFocus(focusName, color) {
 
   const focusItems = document.querySelectorAll(".focus-item");
   focusItems.forEach((item) => {
-    const focusHeader = item.querySelector(".focus-header");
-    if (focusHeader.querySelector("h3").innerText === focusName) {
+    const focusHeader = item.querySelector("h3");
+    if (focusHeader.innerText === focusName) {
       item.classList.add("highlight");
     } else {
       item.classList.remove("highlight");
@@ -152,6 +159,7 @@ async function openTaskMenu(focusName) {
 async function closeTaskMenu() {
   document.getElementById("task-modal").style.display = "none";
 }
+
 async function loadTasks(focusName) {
   const response = await fetch(`/api/task/tasks?focus=${focusName}`);
   const tasks = await response.json();
@@ -289,7 +297,7 @@ async function updateFocusOrder() {
   const focusList = document.querySelectorAll(".focus-item");
   const newOrder = [];
   focusList.forEach((focusItem, index) => {
-    const name = focusItem.querySelector(".focus-header h3").innerText;
+    const name = focusItem.querySelector("h3").innerText;
     newOrder.push({ name, order: index });
   });
   await fetch("/api/focus/update-focus-order", {
