@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description"
               content="Focus Wheel - A simple web app to help you focus on different areas of your life.">
         <meta name="keywords" content="focus, productivity, personal growth">
@@ -21,14 +20,24 @@
                 <div id="focus-description"></div>
             </div>
         </div>
-        <div>
-            <h2>Add New Focus</h2>
-            <input type="text" id="new-focus-name" placeholder="Focus Name">
-            <input type="text"
-                   id="new-focus-description"
-                   placeholder="Focus Description">
-            <input type="color" id="new-focus-color" value="#ff6347">
-            <button onclick="addFocus()">Add Focus</button>
+        <button onclick="openAddFocusModal()">Add New Focus</button>
+        <div id="add-focus-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddFocusModal()">&times;</span>
+                <h2>Add New Focus</h2>
+                <input type="text" id="new-focus-name" placeholder="Focus Name">
+                <input type="text"
+                       id="new-focus-description"
+                       placeholder="Focus Description">
+                <select id="new-focus-color">
+                    <option value="#FF6347">Red</option>
+                    <option value="#4682B4">Blue</option>
+                    <option value="#FFD700">Yellow</option>
+                    <option value="#32CD32">Green</option>
+                    <option value="#FF69B4">Pink</option>
+                </select>
+                <button onclick="addFocus()">Add Focus</button>
+            </div>
         </div>
         <div id="task-modal" class="modal">
             <div class="modal-content">
@@ -103,9 +112,7 @@
                 body: JSON.stringify({ name, description, color })
             });
             loadFocuses();
-            document.getElementById('new-focus-name').value = '';
-            document.getElementById('new-focus-description').value = '';
-            document.getElementById('new-focus-color').value = '#ff6347';
+            closeAddFocusModal();
         }
 
         async function removeFocus(focusName) {
@@ -272,6 +279,14 @@
                 closeTaskMenu();
             }
         };
+
+        function openAddFocusModal() {
+            document.getElementById('add-focus-modal').style.display = 'block';
+        }
+
+        function closeAddFocusModal() {
+            document.getElementById('add-focus-modal').style.display = 'none';
+        }
 
         loadFocuses();
         </script>
