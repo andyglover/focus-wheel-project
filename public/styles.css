@@ -130,6 +130,25 @@ body {
   background-color: #fff;
 }
 
+.task-item input[type="text"] {
+  flex: 1;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.task-item button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4682b4;
+  color: #fff;
+  cursor: pointer;
+}
+
+.task-item button:hover {
+  background-color: #4169e1;
+}
+
 .focus-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
