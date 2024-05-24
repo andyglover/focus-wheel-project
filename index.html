@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Focus Wheel</title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <h1>Focus Wheel</h1>
+        <div id="focus-area">
+            <p>
+                Today's focus area: <span id="focus-name"></span>
+            </p>
+            <p>
+                Description: <span id="focus-description"></span>
+            </p>
+        </div>
+        <button onclick="getTodaysFocus()">Get Today's Focus</button>
+        <button onclick="getRandomFocus()">Get Random Focus</button>
+        <script>
+        async function getTodaysFocus() {
+            const response = await fetch('/api/todays-focus');
+            const data = await response.json();
+            document.getElementById('focus-name').innerText = data.name;
+            document.getElementById('focus-description').innerText = data.description;
+        }
+
+        async function getRandomFocus() {
+            const response = await fetch('/api/random-focus');
+            const data = await response.json();
+            document.getElementById('focus-name').innerText = data.name;
+            document.getElementById('focus-description').innerText = data.description;
+        }
+        </script>
+    </body>
+</html>
