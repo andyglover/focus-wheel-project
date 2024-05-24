@@ -61,7 +61,6 @@ app.get("/api/focuses", (req, res) => {
 
 app.post("/api/set-today-focus", (req, res) => {
   const { focusName } = req.body;
-  // Logic to set today's focus
   const todayFocus = {
     name: focusName,
     description: "Description for " + focusName,
@@ -73,7 +72,12 @@ app.get("/api/tasks", (req, res) => {
   const { focus } = req.query;
   const users = readUsersData();
   const tasks = users[focus] ? users[focus].tasks : [];
-  res.json(tasks);
+  const allTasks = tasks.concat(
+    predefinedTasks[focus]
+      ? predefinedTasks[focus].map((task) => ({ name: task, completed: false }))
+      : []
+  );
+  res.json(allTasks);
 });
 
 app.post("/api/add-task", (req, res) => {
