@@ -39,7 +39,7 @@ function arrangeFocusesInCircle() {
     item.style.position = "absolute";
     item.style.left = `calc(50% + ${x}px)`;
     item.style.top = `calc(50% + ${y}px)`;
-    item.style.transform = `rotate(${angle}rad)`;
+    item.style.transform = `translate(-50%, -50%)`;
   });
 }
 
