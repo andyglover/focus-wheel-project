@@ -13,117 +13,49 @@
     </head>
     <body>
         <h1>Focus Wheel</h1>
-        <div id="focus-area">
-            <p>
-                Today's focus area: <span id="focus-name"></span>
-            </p>
-            <p>
-                Description: <span id="focus-description"></span>
-            </p>
+        <div id="focus-list"></div>
+        <div id="today-focus">
+            <h2>Today's Focus</h2>
+            <div id="focus-name"></div>
+            <div id="focus-description"></div>
         </div>
-        <button onclick="getTodaysFocus()">Get Today's Focus</button>
-        <button onclick="getRandomFocus()">Get Random Focus</button>
-        <h2>Add a Custom Focus Area</h2>
-        <form id="custom-focus-form">
-            <label for="focus-name-input">Focus Area Name:</label>
-            <input type="text" id="focus-name-input" required>
-            <label for="focus-description-input">Description:</label>
-            <input type="text" id="focus-description-input" required>
-            <button type="submit">Add Focus Area</button>
-        </form>
         <script>
-        async function getTodaysFocus() {
-            const response = await fetch('/api/todays-focus');
-            const data = await response.json();
-            document.getElementById('focus-name').innerText = data.name;
-            document.getElementById('focus-description').innerText = data.description;
-        }
-
-        async function getRandomFocus() {
-            const response = await fetch('/api/random-focus');
-            const data = await response.json();
-            document.getElementById('focus-name').innerText = data.name;
-            document.getElementById('focus-description').innerText = data.description;
-        }
-
-        document.getElementById('custom-focus-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const name = document.getElementById('focus-name-input').value;
-            const description = document.getElementById('focus-description-input').value;
-
-            const response = await fetch('/api/focus-area', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, description })
+        async function loadFocuses() {
+            const response = await fetch('/api/focuses');
+            const focuses = await response.json();
+            const focusList = document.getElementById('focus-list');
+            focuses.forEach(focus => {
+                const focusDiv = document.createElement('div');
+                focusDiv.className = 'focus-item';
+                focusDiv.innerHTML = `
+                    <div class="focus-header" style="background-color: ${focus.color}">
+                        <h3>${focus.name}</h3>
+                        <button onclick="setTodayFocus('${focus.name}')">Set as Today's Focus</button>
+                    </div>
+                    <p>${focus.description}</p>
+                    <div class="progress-bar" style="width: ${focus.percentComplete}%"></div>
+                    <button onclick="openTaskMenu('${focus.name}')">Tasks</button>
+                `;
+                focusList.appendChild(focusDiv);
             });
-
-            if (response.ok) {
-                alert('Focus area added successfully');
-                document.getElementById('custom-focus-form').reset();
-            } else {
-                alert('Failed to add focus area');
-            }
-        });
-        </script>
-        <div id="loading" style="display: none;">Loading...</div>
-        <div id="message"></div>
-        <script>
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
         }
 
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
-
-        function showMessage(msg, isError = false) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.innerText = msg;
-            messageDiv.style.color = isError ? 'red' : 'green';
-        }
-
-        async function getTodaysFocus() {
-            showLoading();
-            const response = await fetch('/api/todays-focus');
-            const data = await response.json();
-            document.getElementById('focus-name').innerText = data.name;
-            document.getElementById('focus-description').innerText = data.description;
-            hideLoading();
-        }
-
-        async function getRandomFocus() {
-            showLoading();
-            const response = await fetch('/api/random-focus');
-            const data = await response.json();
-            document.getElementById('focus-name').innerText = data.name;
-            document.getElementById('focus-description').innerText = data.description;
-            hideLoading();
-        }
-
-        document.getElementById('custom-focus-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            showLoading();
-            const name = document.getElementById('focus-name-input').value;
-            const description = document.getElementById('focus-description-input').value;
-
-            const response = await fetch('/api/focus-area', {
+        async function setTodayFocus(focusName) {
+            const response = await fetch('/api/set-today-focus', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, description })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ focusName })
             });
+            const data = await response.json();
+            document.getElementById('focus-name').innerText = data.name;
+            document.getElementById('focus-description').innerText = data.description;
+        }
 
-            if (response.ok) {
-                showMessage('Focus area added successfully');
-                document.getElementById('custom-focus-form').reset();
-            } else {
-                showMessage('Failed to add focus area', true);
-            }
-            hideLoading();
-        });
+        async function openTaskMenu(focusName) {
+            // Logic to open the task sub-menu for the given focus
+        }
+
+        loadFocuses();
         </script>
     </body>
 </html>
