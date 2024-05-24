@@ -7,6 +7,8 @@ docs/
 # Ignore scripts directory
 scripts/
 
+data/users.json
+
 
 # Logs
 logs
