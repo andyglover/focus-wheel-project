@@ -152,10 +152,10 @@ async function openTaskMenu(focusName) {
 async function closeTaskMenu() {
   document.getElementById("task-modal").style.display = "none";
 }
-
 async function loadTasks(focusName) {
   const response = await fetch(`/api/task/tasks?focus=${focusName}`);
   const tasks = await response.json();
+  console.log("Tasks received:", tasks); // Debug log
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = ""; // Ensure task list is cleared before adding new tasks
   tasks.forEach((task) => {
