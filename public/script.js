@@ -26,6 +26,23 @@ async function loadFocuses() {
   enableDragAndDrop();
 }
 
+function arrangeFocusesInCircle() {
+  const focusList = document.getElementById("focus-list");
+  const focusItems = focusList.querySelectorAll(".focus-item");
+  const radius = 200; // Adjust as necessary
+  const angleStep = (2 * Math.PI) / focusItems.length;
+
+  focusItems.forEach((item, index) => {
+    const angle = index * angleStep;
+    const x = radius * Math.cos(angle) - item.clientWidth / 2;
+    const y = radius * Math.sin(angle) - item.clientHeight / 2;
+    item.style.position = "absolute";
+    item.style.left = `${x}px`;
+    item.style.top = `${y}px`;
+    item.style.transform = `rotate(${angle}rad)`;
+  });
+}
+
 async function setTodayFocus(focusName, color) {
   const response = await fetch("/api/focus/set-today-focus", {
     method: "POST",
@@ -230,21 +247,6 @@ async function updateFocusOrder() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newOrder),
-  });
-}
-
-function arrangeFocusesInCircle() {
-  const focusList = document.getElementById("focus-list");
-  const focusItems = focusList.querySelectorAll(".focus-item");
-  const radius = 200; // Adjust as necessary
-  const angleStep = (2 * Math.PI) / focusItems.length;
-
-  focusItems.forEach((item, index) => {
-    const angle = index * angleStep;
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    item.style.position = "absolute";
-    item.style.transform = `translate(${x}px, ${y}px)`;
   });
 }
 

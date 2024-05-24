@@ -21,12 +21,10 @@ body {
 }
 
 #focus-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  order: 1;
   position: relative;
+  width: 600px; /* Adjust as necessary */
+  height: 600px; /* Adjust as necessary */
+  margin: 0 auto;
 }
 
 .focus-item {
@@ -40,7 +38,7 @@ body {
   flex-direction: column;
   align-items: center;
   transition: transform 0.2s;
-  position: relative;
+  position: absolute;
 }
 
 .focus-item.dragging {
@@ -169,10 +167,10 @@ body {
 }
 
 .focus-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-  transform: rotate(30deg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
 @media (max-width: 768px) {
