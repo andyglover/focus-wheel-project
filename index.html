@@ -31,6 +31,8 @@
             </div>
         </div>
         <script>
+        let currentFocusColor = '';
+
         async function loadFocuses() {
             const response = await fetch('/api/focuses');
             const focuses = await response.json();
@@ -48,14 +50,14 @@
                     <p>${focus.description}</p>
                     <div class="progress-bar" style="width: ${focus.percentComplete}%"></div>
                     <button class="task-button" onclick="openTaskMenu('${focus.name}')">Tasks</button>
-                    <button class="set-focus-button" onclick="setTodayFocus('${focus.name}')">Set as Today's Focus</button>
+                    <button class="set-focus-button" onclick="setTodayFocus('${focus.name}', '${focus.color}')">Set as Today's Focus</button>
                 `;
                 focusList.appendChild(focusDiv);
             });
             enableDragAndDrop();
         }
 
-        async function setTodayFocus(focusName) {
+        async function setTodayFocus(focusName, color) {
             const response = await fetch('/api/set-today-focus', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -64,6 +66,18 @@
             const data = await response.json();
             document.getElementById('focus-name').innerText = data.name;
             document.getElementById('focus-description').innerText = data.description;
+            currentFocusColor = color;
+            document.getElementById('today-focus').style.backgroundColor = color;
+
+            const focusItems = document.querySelectorAll('.focus-item');
+            focusItems.forEach(item => {
+                const focusHeader = item.querySelector('.focus-header');
+                if (focusHeader.querySelector('h3').innerText === focusName) {
+                    item.classList.add('highlight');
+                } else {
+                    item.classList.remove('highlight');
+                }
+            });
         }
 
         async function openTaskMenu(focusName) {
@@ -177,6 +191,14 @@
                 body: JSON.stringify(newOrder)
             });
         }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('task-modal');
+            if (event.target === modal) {
+                closeTaskMenu();
+            }
+        };
 
         loadFocuses();
         </script>

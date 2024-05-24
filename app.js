@@ -29,7 +29,24 @@ app.get("/api/focuses", (req, res) => {
       color: "#4682B4",
       percentComplete: 70,
     },
-    // Add more focuses here
+    {
+      name: "Relationships",
+      description: "Spend quality time with family and friends.",
+      color: "#FFD700",
+      percentComplete: 60,
+    },
+    {
+      name: "Finance",
+      description: "Manage your finances and plan your budget.",
+      color: "#32CD32",
+      percentComplete: 80,
+    },
+    {
+      name: "Personal Growth",
+      description: "Engage in activities that promote self-improvement.",
+      color: "#FF69B4",
+      percentComplete: 40,
+    },
   ];
   res.json(focuses);
 });
