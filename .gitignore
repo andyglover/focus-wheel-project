@@ -4,6 +4,10 @@ notes/
 # Docs
 docs/
 
+# Ignore scripts directory
+scripts/
+
+
 # Logs
 logs
 *.log
