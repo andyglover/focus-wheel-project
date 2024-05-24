@@ -23,6 +23,14 @@
         </div>
         <button onclick="getTodaysFocus()">Get Today's Focus</button>
         <button onclick="getRandomFocus()">Get Random Focus</button>
+        <h2>Add a Custom Focus Area</h2>
+        <form id="custom-focus-form">
+            <label for="focus-name-input">Focus Area Name:</label>
+            <input type="text" id="focus-name-input" required>
+            <label for="focus-description-input">Description:</label>
+            <input type="text" id="focus-description-input" required>
+            <button type="submit">Add Focus Area</button>
+        </form>
         <script>
         async function getTodaysFocus() {
             const response = await fetch('/api/todays-focus');
@@ -37,6 +45,27 @@
             document.getElementById('focus-name').innerText = data.name;
             document.getElementById('focus-description').innerText = data.description;
         }
+
+        document.getElementById('custom-focus-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('focus-name-input').value;
+            const description = document.getElementById('focus-description-input').value;
+
+            const response = await fetch('/api/focus-area', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, description })
+            });
+
+            if (response.ok) {
+                alert('Focus area added successfully');
+                document.getElementById('custom-focus-form').reset();
+            } else {
+                alert('Failed to add focus area');
+            }
+        });
         </script>
     </body>
 </html>
