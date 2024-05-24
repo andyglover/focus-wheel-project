@@ -1,4 +1,31 @@
 let currentFocusColor = "";
+const predefinedFocuses = [
+  {
+    name: "Health",
+    description: "Focus on health and well-being",
+    color: "#FF6347",
+  },
+  {
+    name: "Career",
+    description: "Focus on career development",
+    color: "#4682B4",
+  },
+  {
+    name: "Relationships",
+    description: "Focus on relationships and social life",
+    color: "#FFD700",
+  },
+  {
+    name: "Hobbies",
+    description: "Focus on hobbies and interests",
+    color: "#32CD32",
+  },
+  {
+    name: "Finance",
+    description: "Focus on financial management",
+    color: "#FF69B4",
+  },
+];
 
 async function loadFocuses() {
   const response = await fetch("/api/focus/focuses");
@@ -84,6 +111,17 @@ async function addFocus() {
   closeAddFocusModal();
 }
 
+async function addRandomFocus() {
+  const randomFocus =
+    predefinedFocuses[Math.floor(Math.random() * predefinedFocuses.length)];
+  await fetch("/api/focus/add-focus", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(randomFocus),
+  });
+  loadFocuses();
+}
+
 async function removeFocus(focusName) {
   await fetch("/api/focus/remove-focus", {
     method: "POST",
@@ -91,6 +129,15 @@ async function removeFocus(focusName) {
     body: JSON.stringify({ focusName }),
   });
   loadFocuses();
+}
+
+async function removeRandomFocus() {
+  const response = await fetch("/api/focus/focuses");
+  const focuses = await response.json();
+  if (focuses.length > 0) {
+    const randomFocus = focuses[Math.floor(Math.random() * focuses.length)];
+    await removeFocus(randomFocus.name);
+  }
 }
 
 async function openTaskMenu(focusName) {

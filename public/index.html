@@ -3,24 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description"
-              content="Focus Wheel - A simple web app to help you focus on different areas of your life.">
-        <meta name="keywords" content="focus, productivity, personal growth">
-        <meta name="author" content="Your Name">
         <title>Focus Wheel</title>
-        <link rel="stylesheet" href="/styles.css">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Focus Wheel</h1>
         <div id="today-focus">
             <h2>Today's Focus</h2>
             <div id="focus-details">
-                <div id="focus-name"></div>
-                <div id="focus-description"></div>
+                <h3 id="focus-name"></h3>
+                <p id="focus-description"></p>
             </div>
         </div>
         <div id="focus-list" class="focus-list"></div>
-        <button onclick="openAddFocusModal()">Add New Focus</button>
+        <div id="add-remove-buttons">
+            <button class="add-remove-button" onclick="addRandomFocus()">Add Random Focus</button>
+            <button class="add-remove-button" onclick="removeRandomFocus()">Remove Random Focus</button>
+        </div>
         <div id="add-focus-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeAddFocusModal()">&times;</span>
@@ -28,23 +26,26 @@
                 <input type="text" id="new-focus-name" placeholder="Focus Name">
                 <input type="text"
                        id="new-focus-description"
-                       placeholder="Focus Description">
-                <div id="color-selection">
-                    <div class="color-option"
-                         style="background-color: #FF6347"
-                         onclick="selectColor('#FF6347')"></div>
-                    <div class="color-option"
-                         style="background-color: #4682B4"
-                         onclick="selectColor('#4682B4')"></div>
-                    <div class="color-option"
-                         style="background-color: #FFD700"
-                         onclick="selectColor('#FFD700')"></div>
-                    <div class="color-option"
-                         style="background-color: #32CD32"
-                         onclick="selectColor('#32CD32')"></div>
-                    <div class="color-option"
-                         style="background-color: #FF69B4"
-                         onclick="selectColor('#FF69B4')"></div>
+                       placeholder="Focus Description (optional)">
+                <div>
+                    <h3>Select Color</h3>
+                    <div class="color-options">
+                        <div class="color-option"
+                             style="background-color: #FF6347"
+                             onclick="selectColor('#FF6347')"></div>
+                        <div class="color-option"
+                             style="background-color: #4682B4"
+                             onclick="selectColor('#4682B4')"></div>
+                        <div class="color-option"
+                             style="background-color: #FFD700"
+                             onclick="selectColor('#FFD700')"></div>
+                        <div class="color-option"
+                             style="background-color: #32CD32"
+                             onclick="selectColor('#32CD32')"></div>
+                        <div class="color-option"
+                             style="background-color: #FF69B4"
+                             onclick="selectColor('#FF69B4')"></div>
+                    </div>
                 </div>
                 <button onclick="addFocus()">Add Focus</button>
             </div>
@@ -52,11 +53,13 @@
         <div id="task-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeTaskMenu()">&times;</span>
-                <h2 id="task-focus-name"></h2>
+                <h2>
+                    Tasks for <span id="task-focus-name"></span>
+                </h2>
                 <div id="task-list"></div>
                 <div id="predefined-task-list"></div>
             </div>
         </div>
-        <script src="/script.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>
