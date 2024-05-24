@@ -6,7 +6,14 @@ const usersFilePath = path.join(__dirname, "../data", "users.json");
 const readUsersData = () => {
   if (fs.existsSync(usersFilePath)) {
     const data = fs.readFileSync(usersFilePath, "utf8");
-    return JSON.parse(data);
+    try {
+      return JSON.parse(data);
+    } catch (error) {
+      console.error(
+        "Invalid JSON in users.json, initializing to empty object."
+      );
+      return {};
+    }
   }
   return {};
 };
